@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 
+
 let persons = [
     {
         "name": "Ada Lovelace",
@@ -81,7 +82,7 @@ const generateId = () => {
 app.post('/persons', (req, res) => {
     const body = req.body
 
-    if (!body.name) {
+    if (!body.name && !body.number) {
         return res.status(400).json({
             error: 'content missing'
         })
@@ -96,6 +97,17 @@ app.post('/persons', (req, res) => {
     persons = persons.concat(person)
     res.json(person)
 })
+
+
+// middleware
+const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path:  ', request.path)
+    console.log('Body:  ', request.body)
+    console.log('---')
+    next()
+}
+app.use(requestLogger)
 
 const PORT = 8000
 app.listen(PORT, () => {
