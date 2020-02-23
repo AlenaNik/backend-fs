@@ -51,12 +51,12 @@ app.get('/info', (req, res) => {
 
 // get single id
 
-app.get('/notes/:id', (req, res) => {
+app.get('/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     console.log(id)
-    const note = notes.find(note => note.id === id)
-    if (note) {
-        res.json(note)
+    const person = persons.find(person => person.id === id)
+    if (person) {
+        res.json(person)
     } else {
         res.status(404).end()
     }
