@@ -64,39 +64,37 @@ app.get('/persons/:id', (req, res) => {
 
 // delete by id
 
-app.delete('/notes/:id', (req, res) => {
+app.delete('/persons/:id', (req, res) => {
     const id = Number(req.params.id)
-    notes = notes.filter(note => note.id !== id)
+    persons = persons.filter(person => person.id !== id)
     res.status(204).end()
 })
 
 // post
 const generateId = () => {
-    const maxId = notes.length > 0
-        ? Math.max(...notes.map(n => n.id))
+    const maxId = persons.length > 0
+        ? Math.max(...persons.map(p => p.id))
         : 0
     return maxId + 1
 }
 
-app.post('/notes', (req, res) => {
+app.post('/persons', (req, res) => {
     const body = req.body
 
-    if (!body.content) {
+    if (!body.name) {
         return res.status(400).json({
             error: 'content missing'
         })
     }
 
-    const note = {
-        content: body.content,
-        important: body.important || false,
-        date: new Date(),
+    const person = {
+        name: body.name,
+        number: body.number,
         id: generateId(),
     }
 
-    notes = notes.concat(note)
-
-    res.json(note)
+    persons = persons.concat(person)
+    res.json(person)
 })
 
 const PORT = 8000
