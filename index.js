@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(cors())
 
@@ -45,17 +46,17 @@ app.get('/', (req, res) => {
     res.send('<p>Hello from normal slash</p>')
 })
 
-app.get('/persons', (req, res) => {
+app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
-app.get('/info', (req, res) => {
+app.get('/api/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${persons.length} people</p>`)
 })
 
 // get single id
 
-app.get('/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     console.log(id)
     const person = persons.find(person => person.id === id)
@@ -68,7 +69,7 @@ app.get('/persons/:id', (req, res) => {
 
 // delete by id
 
-app.delete('/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     persons = persons.filter(person => person.id !== id)
     res.status(204).end()
@@ -82,7 +83,7 @@ const generateId = () => {
     return maxId + 1
 }
 
-app.post('/persons', (req, res) => {
+app.post('/api/persons', (req, res) => {
     const body = req.body
 
     if (!body.name && !body.number) {
